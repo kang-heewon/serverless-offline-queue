@@ -14,7 +14,7 @@
         "@serverless-offline-queue/eslint-config": "workspace:*",
         "@serverless-offline-queue/plugin-sqs": "workspace:*",
         "@serverless-offline-queue/tsconfig": "workspace:*",
-        "esbuild": "0.24.2",
+        "esbuild": "0.25.0",
         "serverless": "3.40.0",
         "serverless-esbuild": "1.54.6",
         "serverless-offline": "13.9.0"
