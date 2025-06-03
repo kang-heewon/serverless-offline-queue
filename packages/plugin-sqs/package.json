@@ -1,6 +1,6 @@
 {
   "name": "@serverless-offline-queue/plugin-sqs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Serverless Offline plugin for Amazon SQS emulation",
   "license": "MIT",
   "type": "module",
