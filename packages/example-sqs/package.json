@@ -1,0 +1,22 @@
+{
+    "name": "@serverless-offline-queue/example-sqs",
+    "version": "0.0.1",
+    "private": true,
+    "license": "MIT",
+    "scripts": {
+        "dev": "serverless offline start --stage dev",
+        "predev": "pnpm --filter @serverless-offline-queue/plugin-sqs build"
+    },
+    "dependencies": {
+        "@aws-sdk/client-sqs": "3.821.0"
+    },
+    "devDependencies": {
+        "@serverless-offline-queue/eslint-config": "workspace:*",
+        "@serverless-offline-queue/plugin-sqs": "workspace:*",
+        "@serverless-offline-queue/tsconfig": "workspace:*",
+        "esbuild": "0.24.2",
+        "serverless": "3.40.0",
+        "serverless-esbuild": "1.54.6",
+        "serverless-offline": "13.9.0"
+    }
+}

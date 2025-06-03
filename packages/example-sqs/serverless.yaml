@@ -1,0 +1,112 @@
+service: serverless-offline-queue-example-sqs
+frameworkVersion: '3'
+
+useDotenv: true
+
+plugins:
+  - serverless-esbuild
+  - '@serverless-offline-queue/plugin-sqs'
+  - serverless-offline
+
+custom:
+  esbuild:
+    bundle: true
+    minify: false
+    keepNames: true
+    sourcemap: true
+    sourcesContent: false
+    treeShaking: false
+    ignoreAnnotations: true
+    watch:
+      patterns:
+        - 'src/**/*.ts'
+  serverless-offline:
+    httpPort: 4000
+    reloadHandler: true
+  '@serverless-offline-queue/plugin-sqs':
+    queues:
+      - ${self:provider.stage}-test-queue
+      - ${self:provider.stage}-test-queue-dlq
+      - ${self:provider.stage}-test-queue-2
+      - ${self:provider.stage}-test-queue-2-dlq
+
+provider:
+  name: aws
+  runtime: nodejs22.x
+  region: ap-northeast-2
+  stackName: ${self:provider.stage}-${self:service}
+  stage: ${opt:stage, 'dev'}
+  architecture: arm64
+  logRetentionInDays: 7
+  timeout: 180
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - sqs:SendMessage
+            - sqs:ReceiveMessage
+            - sqs:DeleteMessage
+            - sqs:GetQueueAttributes
+          Resource:
+            - !GetAtt TestQueue.Arn
+            - !GetAtt TestQueueDLQ.Arn
+            - !GetAtt TestQueue2.Arn
+            - !GetAtt TestQueue2DLQ.Arn
+
+functions:
+  test:
+    handler: src/handler.handler
+    events:
+      - httpApi: '*'
+    environment:
+      TEST_QUEUE_URL: !Ref TestQueue
+      TEST_QUEUE_2_URL: !Ref TestQueue2
+
+  worker:
+    handler: src/worker.handler
+    events:
+      - sqs:
+          arn: !GetAtt TestQueue.Arn
+          batchSize: 1
+
+  worker2:
+    handler: src/worker.handler
+    events:
+      - sqs:
+          arn: !GetAtt TestQueue2.Arn
+          batchSize: 1
+
+resources:
+  Resources:
+    TestQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:provider.stage}-test-queue
+        VisibilityTimeoutSeconds: 300
+        MessageRetentionPeriod: 1209600 # 14 days
+        DelaySeconds: 0
+        RedrivePolicy:
+          deadLetterTargetArn: !GetAtt TestQueueDLQ.Arn
+          maxReceiveCount: 3
+    TestQueueDLQ:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:provider.stage}-test-queue-dlq
+        MessageRetentionPeriod: 1209600 # 14 days
+    
+    TestQueue2:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:provider.stage}-test-queue-2
+        VisibilityTimeoutSeconds: 300
+        MessageRetentionPeriod: 1209600 # 14 days
+        DelaySeconds: 0
+        RedrivePolicy:
+          deadLetterTargetArn: !GetAtt TestQueue2DLQ.Arn
+          maxReceiveCount: 3
+    TestQueue2DLQ:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:provider.stage}-test-queue-2-dlq
+        MessageRetentionPeriod: 1209600 # 14 days

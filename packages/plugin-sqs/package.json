@@ -1,0 +1,28 @@
+{
+  "name": "@serverless-offline-queue/plugin-sqs",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --outDir dist"
+  },
+  "devDependencies": {
+    "@serverless-offline-queue/eslint-config": "workspace:*",
+    "@serverless-offline-queue/tsconfig": "workspace:*",
+    "@types/serverless": "3.12.27",
+    "esbuild": "0.24.2",
+    "serverless-esbuild": "1.54.6",
+    "serverless-offline": "13.9.0",
+    "tsup": "8.5.0"
+  },
+  "peerDependencies": {
+    "serverless": ">=3.0.0",
+    "serverless-offline": ">=13.0.0"
+  }
+}
