@@ -21898,10 +21898,10 @@ __export(handler_exports, {
 });
 module.exports = __toCommonJS(handler_exports);
 var import_client_sqs = __toESM(require_dist_cjs52());
-var sqs = new import_client_sqs.SQSClient({});
+var sqs = new import_client_sqs.SQSClient({
+  endpoint: "http://localhost:9324"
+});
 var handler = /* @__PURE__ */ __name(async () => {
-  console.log("TEST_QUEUE_URL", process.env.TEST_QUEUE_URL);
-  console.log("TEST_QUEUE_2_URL", process.env.TEST_QUEUE_2_URL);
   await sqs.send(new import_client_sqs.SendMessageCommand({
     QueueUrl: process.env.TEST_QUEUE_URL,
     MessageBody: JSON.stringify({ message: "hello world" })

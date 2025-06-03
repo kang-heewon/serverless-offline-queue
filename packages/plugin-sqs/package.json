@@ -1,16 +1,51 @@
 {
   "name": "@serverless-offline-queue/plugin-sqs",
   "version": "0.0.1",
-  "private": true,
+  "description": "Serverless Offline plugin for Amazon SQS emulation",
   "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "keywords": [
+    "serverless",
+    "serverless-offline",
+    "sqs",
+    "aws",
+    "plugin",
+    "queue",
+    "lambda"
+  ],
+  "author": "kang-heewon <heewon.dev@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kang-heewon/serverless-offline-queue.git",
+    "directory": "packages/plugin-sqs"
+  },
+  "bugs": {
+    "url": "https://github.com/kang-heewon/serverless-offline-queue/issues"
+  },
+  "homepage": "https://github.com/kang-heewon/serverless-offline-queue#readme",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "tsup src/index.ts --format esm --dts --outDir dist"
+    "build": "tsup src/index.ts --format esm --dts --outDir dist",
+    "clean": "rm -rf dist",
+    "dev": "tsup src/index.ts --format esm --dts --outDir dist --watch",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "package.json"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "local-aws-sqs": "2.0.0",
+    "@aws-sdk/client-sqs": "3.821.0"
   },
   "devDependencies": {
     "@serverless-offline-queue/eslint-config": "workspace:*",
@@ -24,5 +59,13 @@
   "peerDependencies": {
     "serverless": ">=3.0.0",
     "serverless-offline": ">=13.0.0"
+  },
+  "peerDependenciesMeta": {
+    "serverless": {
+      "optional": false
+    },
+    "serverless-offline": {
+      "optional": false
+    }
   }
 }

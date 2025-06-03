@@ -24,7 +24,7 @@ __export(worker_exports, {
 });
 module.exports = __toCommonJS(worker_exports);
 var handler = /* @__PURE__ */ __name(async (event) => {
-  console.log("hello world", JSON.stringify(event));
+  console.log("hello world", JSON.parse(event.Records[0].body).message);
 }, "handler");
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

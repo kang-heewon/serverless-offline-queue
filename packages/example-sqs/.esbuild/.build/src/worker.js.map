@@ -1,6 +1,6 @@
 {
   "version": 3,
   "sources": ["../../../src/worker.ts"],
-  "mappings": ";;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAO,IAAM,UAAU,8BAAO,UAAe;AACzC,UAAQ,IAAI,eAAe,KAAK,UAAU,KAAK,CAAC;AACpD,GAFuB;",
+  "mappings": ";;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AACO,IAAM,UAAU,8BAAO,UAAe;AACzC,UAAQ,IAAI,eAAe,KAAK,MAAM,MAAM,QAAQ,CAAC,EAAE,IAAI,EAAE,OAAO;AACxE,GAFuB;",
   "names": []
 }
