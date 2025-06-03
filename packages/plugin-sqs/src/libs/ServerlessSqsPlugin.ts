@@ -9,17 +9,6 @@ interface PluginConfig {
     queues?: string[];
 }
 
-interface FunctionConfig {
-    handler: string;
-    events?: Array<{
-        sqs?: {
-            arn: any;
-            batchSize?: number;
-        };
-    }>;
-    environment?: Record<string, any>;
-}
-
 export class ServerlessSqsPlugin implements ServerlessPlugin {
     private sqsServer?: Server;
     private sqsClient?: SQSClient;
@@ -29,6 +18,12 @@ export class ServerlessSqsPlugin implements ServerlessPlugin {
     constructor(private readonly serverless: Serverless) { }
 
     hooks: ServerlessPlugin.Hooks = {
+        "before:offline:start": async () => {
+            await this.startSqsServer();
+            this.setQueueEnvironmentVariables();
+            await this.createLambda();
+            this.startPolling();
+        },
         "before:offline:start:init": async () => {
             await this.startSqsServer();
             this.setQueueEnvironmentVariables();
@@ -105,7 +100,7 @@ export class ServerlessSqsPlugin implements ServerlessPlugin {
 
     private getOfflineOptions() {
         const { service: { custom = {}, provider } } = this.serverless;
-        const offlineOptions = custom['serverless-offline'] || {};
+        const offlineOptions = custom['serverless-offline'] ?? {};
 
         return {
             ...provider,
@@ -313,6 +308,6 @@ export class ServerlessSqsPlugin implements ServerlessPlugin {
     }
 
     private logError(message: string, error?: any): void {
-        console.error(`[@serverless-offline-queue/plugin-sqs] ${message}`, error || '');
+        console.error(`[@serverless-offline-queue/plugin-sqs] ${message}`, error ?? '');
     }
 }

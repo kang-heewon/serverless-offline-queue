@@ -26,9 +26,7 @@ custom:
   '@serverless-offline-queue/plugin-sqs':
     queues:
       - ${self:provider.stage}-test-queue
-      - ${self:provider.stage}-test-queue-dlq
       - ${self:provider.stage}-test-queue-2
-      - ${self:provider.stage}-test-queue-2-dlq
 
 provider:
   name: aws
